@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420" font-family="Menlo, Consolas, monospace" font-size="14">
+  <rect width="760" height="420" rx="10" fill="#101418"/>
+  <circle cx="24" cy="22" r="6" fill="#ff5f56"/>
+  <circle cx="44" cy="22" r="6" fill="#ffbd2e"/>
+  <circle cx="64" cy="22" r="6" fill="#27c93f"/>
+  <text x="380" y="27" fill="#8b949e" text-anchor="middle" font-size="12">jsonsaw — saw giant JSON arrays into JSONL, weld them back, in ~10 MiB</text>
+  <g fill="#c9d1d9">
+    <text x="24" y="62"><tspan fill="#7ee787">$</tspan> jsonsaw paths --depth 3 export.json | grep records <tspan fill="#8b949e"># 187 MB, 2M records</tspan></text>
+    <text x="24" y="86" fill="#8b949e">.data.records    <tspan fill="#79c0ff">array[2000000]</tspan></text>
+    <text x="24" y="108" fill="#8b949e">.data.records[]  object{5}</text>
+    <text x="24" y="146"><tspan fill="#7ee787">$</tspan> jsonsaw split --path data.records --chunk 500000 --out shards export.json</text>
+    <text x="24" y="170">jsonsaw split: <tspan fill="#79c0ff">2000000 elements</tspan> written across <tspan fill="#79c0ff">4 part files</tspan></text>
+    <text x="24" y="192" fill="#8b949e">shards/part-00000.jsonl … shards/part-00003.jsonl   <tspan fill="#7ee787">peak RSS 10 MiB</tspan></text>
+    <text x="24" y="214" fill="#8b949e">(jq -c '.data.records[]' on the same file: 2291 MiB)</text>
+    <text x="24" y="252"><tspan fill="#7ee787">$</tspan> jsonsaw join --path data.records shards/part-*.jsonl &gt; rejoined.json</text>
+    <text x="24" y="276">jsonsaw join: <tspan fill="#79c0ff">2000000 elements</tspan> from 4 sources</text>
+    <text x="24" y="314"><tspan fill="#7ee787">$</tspan> jsonsaw split --path data.records --quiet rejoined.json | cmp - original.jsonl</text>
+    <text x="24" y="338" fill="#8b949e">cmp exits 0 — <tspan fill="#7ee787">round trip byte-identical</tspan></text>
+    <text x="24" y="376"><tspan fill="#7ee787">$</tspan> printf '[1,2,' | jsonsaw split</text>
+    <text x="24" y="400"><tspan fill="#f85149">jsonsaw: line 1, col 6: unexpected end of input</tspan> <tspan fill="#8b949e">(exit 1)</tspan></text>
+  </g>
+</svg>
